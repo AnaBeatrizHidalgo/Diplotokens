@@ -26,6 +26,9 @@ dependencies = [
     "python-dotenv",
     "ruff",
     "scikit-learn",
+    "duckdb",
+    "tqdm",
+    "requests",
 ]
 requires-python = "~=>3.11.0"
 
