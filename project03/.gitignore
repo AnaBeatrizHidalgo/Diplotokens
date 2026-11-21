@@ -189,3 +189,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Pesos e artefatos de treino: só o .gitkeep fica versionado
+/models/*
+!/models/.gitkeep
+*.pt
+*.pth
+*.ckpt
+ 

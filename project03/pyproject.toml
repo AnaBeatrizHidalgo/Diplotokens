@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "diplo_graph03"
 version = "0.0.1"
-description = "Projeto 3 da mat\u00e9ria NLP da Unicamp 2s2026."
+description = "Projeto 3 da matéria NLP da Unicamp 2s2026."
 authors = [
   { name = "Diplotokens" },
 ]
@@ -13,8 +13,11 @@ authors = [
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
-    
 ]
+
+# torch fica de fora de propósito: no Windows, o pip instala a versão só de CPU.
+# Instale à parte, conforme a sua GPU (https://pytorch.org/get-started/locally/).
+
 dependencies = [
     "ipython",
     "jupyterlab",
@@ -24,14 +27,21 @@ dependencies = [
     "pandas",
     "pip",
     "python-dotenv",
+    "pytest",
+    "pyyaml",
+    "requests",
     "ruff",
     "scikit-learn",
+    "scipy",
     "duckdb",
     "tqdm",
-    "requests",
+    "transformers",
 ]
-requires-python = ">=3.11.0"
+requires-python = ">=3.11"
 
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 99
@@ -44,4 +54,3 @@ extend-select = ["I"]  # Add import sorting
 [tool.ruff.lint.isort]
 known-first-party = ["diplo_graph03"]
 force-sort-within-sections = true
-

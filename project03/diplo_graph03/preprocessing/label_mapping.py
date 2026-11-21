@@ -2,7 +2,8 @@
 Converte o MACCROBAT (brat .txt/.ann) para o esquema do nosso grafo.
 
 Uso:
-    python label_mapping.py PASTA_MACCROBAT PASTA_SAIDA
+    python -m diplo_graph03.preprocessing.label_mapping PASTA_MACCROBAT PASTA_SAIDA
+    python -m diplo_graph03.preprocessing.label_mapping    # sem argumentos: usa os caminhos do config.py
 
 Para cada par .txt/.ann da entrada, grava na saída um par com o mesmo nome:
   - .txt: cópia idêntica (as posições em caracteres continuam valendo);
@@ -47,7 +48,7 @@ import sys
 from collections import Counter, deque
 from pathlib import Path
 
-from brat_reader import Entity, Relation
+from .brat_reader import Entity, Relation
 
 # ---------------------------------------------------------------- nós
 
@@ -406,8 +407,16 @@ def convert_folder(in_dir, out_dir) -> Counter:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit("uso: python label_mapping.py PASTA_MACCROBAT PASTA_SAIDA")
-    report = convert_folder(sys.argv[1], sys.argv[2])
+    from diplo_graph03 import config
+
+    args = sys.argv[1:]
+    if not args:
+        src_dir, dst_dir = config.MACCROBAT_DIR, config.MACCROBAT_GRAFO_DIR
+    elif len(args) == 2:
+        src_dir, dst_dir = args
+    else:
+        sys.exit("uso: python -m diplo_graph03.preprocessing.label_mapping [PASTA_MACCROBAT PASTA_SAIDA]")
+    print(f"{src_dir}  ->  {dst_dir}")
+    report = convert_folder(src_dir, dst_dir)
     for k in sorted(report):
         print(f"{report[k]:6d}  {k}")
