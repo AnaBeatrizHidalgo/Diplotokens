@@ -9,7 +9,7 @@ Só depende da biblioteca padrão (sem torch/transformers): dá para converter o
 carregar o BERT. O que usa o BERT fica em features.py.
 
 Conversão pela linha de comando (sem argumentos, usa os caminhos do config.py):
-    python -m diplo_graph03.dataset [PASTA_MACCROBAT PASTA_SAIDA]
+    python -m diplo_graph03.preprocessing.dataset [PASTA_MACCROBAT PASTA_SAIDA]
 """
 
 import json
@@ -168,7 +168,7 @@ def get_splits(ids, path, ratios=(0.7, 0.15, 0.15), seed=42) -> dict:
 # Converte o MACCROBAT (brat .txt/.ann) para o esquema do nosso grafo.
 #
 # Uso (via dataset.py):
-#     python -m diplo_graph03.dataset PASTA_MACCROBAT PASTA_SAIDA
+#     python -m diplo_graph03.preprocessing.dataset PASTA_MACCROBAT PASTA_SAIDA
 #
 # Para cada par .txt/.ann da entrada, grava na saída um par com o mesmo nome:
 #   - .txt: cópia idêntica (as posições em caracteres continuam valendo);
