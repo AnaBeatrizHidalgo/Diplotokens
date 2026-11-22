@@ -1,0 +1,13 @@
+
+diplo_graph03/
+├── config.py
+├── schema.py                 <- compartilhado: tipos de nó/aresta, triplas permitidas, e o objeto Graph
+├── evaluation.py             <- compartilhado: mesmas métricas para as 3 abordagens
+├── preprocessing/
+│   ├── dataset.py            <- compartilhado: leitura, divisão por caso, conversão
+│   └── windows.py            <- compartilhado: recorta casos em janelas de k linhas
+└── modeling/
+    ├── seq2tags/             <- Ana (adaptação da rede do projeto 2. Duas etapas: classificador de nós --> classificador de arestas)
+    ├── seq2seq/              <- Palacio (modelo de linguagem com decodermpara "escrever" o grafo com palavras)
+    └── seq2matrix/           <- Rafa (rede que gera matriz de adjacências direto)
+
