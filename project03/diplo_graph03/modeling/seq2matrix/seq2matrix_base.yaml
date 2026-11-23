@@ -1,0 +1,56 @@
+# Configuração padrão do seq2matrix. Cada experimento copia este arquivo e muda poucas chaves.
+# Valores "provisório" devem ser trocados pelos percentis de: python -m diplo_graph03.preprocessing.windows
+
+# dados
+window_lines: 1
+max_nodes: 16            # provisório
+max_len: 128             # provisório
+max_span_len: 16         # provisório
+mask_digits: false
+seed: 0
+
+# encoder
+encoder_name: microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract-fulltext
+freeze_encoder: true
+lr_encoder: 2.0e-5
+
+# decoder
+decoder_layers: 2
+decoder_heads: 12
+decoder_ffn_dim: 3072
+decoder_dropout: 0.1
+patient_slot: true
+
+# cabeças
+edge_features: concat_diff_prod
+edge_hidden: 512
+edge_layers: 2
+edge_dropout: 0.1
+
+# pareamento e perdas
+matching: hungarian
+cost_type: 1.0
+cost_span: 1.0
+empty_weight: 0.1
+loss_w_span: 1.0
+loss_w_nodes: 1.0
+loss_w_edges: 1.0
+edge_loss: focal
+focal_gamma: 2.0
+edge_neg_ratio: null
+
+# treino
+lr: 1.0e-4
+weight_decay: 0.01
+batch_size: 16
+epochs: 50
+early_stopping_patience: 10
+warmup_ratio: 0.1
+grad_clip: 1.0
+fp16: true
+
+# decodificação
+schema_mask: true
+node_empty_threshold: 0.5
+edge_none_threshold: 0.5
+dedupe_spans: true
