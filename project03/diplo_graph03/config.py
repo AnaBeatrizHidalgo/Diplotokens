@@ -20,15 +20,15 @@ METADATA_CSV = SAMPLE_DATA_DIR / "metadata.csv"
 
 RESULTS_DIR = DATA_DIR / "results"
 
-# MACCROBAT2020
-MACCROBAT_DIR = EXTERNAL_DATA_DIR / "MACCROBAT2020"                # original, intocado
-MACCROBAT_GRAFO_DIR = INTERIM_DATA_DIR / "maccrobat_grafo"         # saída do label_mapping
-SPLITS_JSON = INTERIM_DATA_DIR / "splits.json"                     # divisão treino/val/teste por caso
-EMBEDDINGS_DIR = PROCESSED_DATA_DIR / "embeddings"
-WINDOWS_DIR = PROCESSED_DATA_DIR / "windows"
-
 # artefatos e experimentos
 MODELS_DIR = PROJ_ROOT / "models"
 CONFIGS_DIR = PROJ_ROOT / "configs"
 REPORTS_DIR = PROJ_ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
+
+# MACCROBAT2020
+MACCROBAT_DIR = EXTERNAL_DATA_DIR / "MACCROBAT2020"                # original, intocado
+MACCROBAT_GRAFO_DIR = INTERIM_DATA_DIR / "maccrobat_grafo"         # saída do label_mapping
+SPLITS_JSON = CONFIGS_DIR / "splits.json"             # divisão treino/val/teste por caso
+EMBEDDINGS_DIR = PROCESSED_DATA_DIR / "embeddings"
+WINDOWS_DIR = PROCESSED_DATA_DIR / "windows"
