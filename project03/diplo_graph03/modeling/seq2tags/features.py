@@ -6,6 +6,10 @@ Features para os classificadores: embeddings contextuais (PubMedBERT) e datasets
 
 Este módulo precisa de torch e transformers. A leitura e a conversão dos dados ficam em
 dataset.py, que não precisa deles.
+
+NOTA (ajuste feito ao integrar com o schema compartilhado): o rótulo de "sem aresta" era
+"NONE" (string solta); passou a ser `schema.NO_EDGE` ("NO_EDGE"), para bater com
+`schema.EDGE_CLASSES` usado pela avaliação e pelos outros 2 modelos (seq2seq, seq2matrix).
 """
 
 import re
@@ -14,6 +18,8 @@ from pathlib import Path
 import numpy as np
 import torch
 from transformers import AutoModel, AutoTokenizer
+
+from diplo_graph03 import schema
 
 # ================================================================ 1. Embeddings com PubMedBERT
 #
@@ -87,12 +93,12 @@ class BertEmbedder:
 # Dois datasets, ambos no formato (X, y) que qualquer classificador estilo scikit-learn aceita:
 #
 #   NÓS    : uma linha por subtoken     -> X = vetor do subtoken,  y = tag BIO ("B-Age", "I-Age", "O")
-#   ARESTAS: uma linha por par de nós   -> X = [v1 ; v2 ; |v1-v2| ; distância],  y = tipo da relação ou "NONE"
+#   ARESTAS: uma linha por par de nós   -> X = [v1 ; v2 ; |v1-v2| ; distância],  y = tipo da relação ou NO_EDGE
 #
 # O BERT roda uma vez só: o resultado de cada divisão fica em cache (.npz).
 # `embedder` é qualquer objeto com `.name` e `.embed_text(text) -> (offsets, embeddings)`.
 
-NONE_LABEL = "NONE"
+NONE_LABEL = schema.NO_EDGE
 
 
 # ---------------------------------------------------------------- nós
@@ -172,7 +178,7 @@ def build_edge_dataset(docs, token_data, max_char_dist=300, neg_ratio=None, seed
     Exemplos para a classificação de arestas.
 
     - positivos: toda relação do .ann (direcionada: arg1 -> arg2);
-    - negativos ("NONE"): pares de entidades a até `max_char_dist` caracteres sem relação;
+    - negativos (schema.NO_EDGE): pares de entidades a até `max_char_dist` caracteres sem relação;
     - neg_ratio: se informado (ex.: 5), mantém só 5 negativos por positivo. Use no treino
       para lidar com o desbalanceamento; deixe None em validação e teste.
     Retorna dict com X, y e meta (caso, id do nó 1, id do nó 2).
