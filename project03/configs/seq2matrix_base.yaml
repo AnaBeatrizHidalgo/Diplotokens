@@ -3,11 +3,11 @@
 
 # dados
 window_lines: 1
-max_nodes: 16            # provisório
-max_len: 128             # provisório
-max_span_len: 16         # provisório
+max_nodes: 20
+max_len: 192
+max_span_len: 16
 mask_digits: false
-seed: 0
+seed: 13
 
 # encoder
 encoder_name: microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract-fulltext
@@ -47,7 +47,7 @@ epochs: 50
 early_stopping_patience: 10
 warmup_ratio: 0.1
 grad_clip: 1.0
-fp16: true
+fp16: false
 
 # decodificação
 schema_mask: true

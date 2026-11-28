@@ -36,6 +36,9 @@ from diplo_graph03.preprocessing import windows as W
 PAD_ID = 0          # id do [PAD] no PubMedBERT; as posições de padding são mascaradas de qualquer forma
 IGNORE = -100       # valor de preenchimento dos alvos de nó (ignorado pelas perdas)
 
+# se um mesmo par de slots recebe duas classes, vence a mais específica
+EDGE_PRIORITY = {"FAMILY_HISTORY": 3, "PERSONAL_HISTORY": 2, "DIAGNOSED_WITH": 1}
+
 # ================================================================ 1. Tokenização
 
 
@@ -132,12 +135,18 @@ def build_example(window: W.Window, tokenizer, cfg: Seq2MatrixConfig, report: Co
             report["edges_patient_skipped"] += 1              # sem slot do paciente, fora do alvo
         elif a is None or b is None:
             report["edges_lost_dropped_node"] += 1
-        elif (a, b) in assigned and assigned[(a, b)] != cls:
-            report["edges_conflict_same_pair"] += 1           # duas classes no mesmo par: fica a 1ª
         elif (a, b) not in assigned:
             assigned[(a, b)] = cls
             edge_target[a, b] = cls
             report["edges_kept"] += 1
+        elif assigned[(a, b)] != cls:                         # duas classes no mesmo par
+            old = assigned[(a, b)]
+            report["edges_conflict_same_pair"] += 1
+            names = sorted((schema.EDGE_CLASSES[old], schema.EDGE_CLASSES[cls]))
+            report["conflict: " + " | ".join(names)] += 1
+            if EDGE_PRIORITY.get(e.type, 0) > EDGE_PRIORITY.get(schema.EDGE_CLASSES[old], 0):
+                assigned[(a, b)] = cls
+                edge_target[a, b] = cls
 
     return {
         "input_ids": torch.tensor(enc["input_ids"], dtype=torch.long),
@@ -201,6 +210,10 @@ class WindowDataset(Dataset):
             if r[k]:
                 print(f"   - {k}: {r[k]}")
         print("(as arestas que cruzam janelas já ficaram de fora do gabarito: ver windows.window_stats)")
+
+        for k in sorted(r):
+            if k.startswith("conflict: "):
+                print(f"   - {k}: {r[k]}")
 
 
 def collate(batch: list[dict]) -> dict:

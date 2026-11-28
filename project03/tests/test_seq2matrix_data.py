@@ -128,5 +128,8 @@ def test_contagem_do_que_nao_cabe(tok):
     ds = WindowDataset([_doc()], cfg, tok)
     assert ds.report["nodes_dropped_over_max_nodes"] == 1               # elbow não cabe na janela 1
     assert ds.report["edges_lost_dropped_node"] >= 1                    # OCCURS_IN perdeu um nó
-    small = WindowDataset([_doc()], Seq2MatrixConfig(max_nodes=4, max_len=8), tok)
-    assert small.report["windows_truncated"] > 0
+
+    # caso inteiro numa janela só, com max_len pequeno: o texto estoura e os nós do fim perdem o token
+    small = WindowDataset([_doc()], Seq2MatrixConfig(window_lines=0, max_nodes=4, max_len=8), tok)
+    assert small.report["windows_truncated"] == 1
+    assert small.report["nodes_dropped_no_token"] > 0

@@ -28,9 +28,9 @@ CHOICES = {
 class Seq2MatrixConfig:
     # ---------------------------------------------------------------- dados
     window_lines: int | None = 1        # linhas por janela (0 ou None = caso inteiro)
-    max_nodes: int = 16                 # candidatos a nó por janela (provisório)
-    max_len: int = 128                  # tokens por janela, com [CLS] e [SEP] (provisório)
-    max_span_len: int = 16              # tamanho máximo de um span, em subtokens (provisório)
+    max_nodes: int = 20                 # candidatos a nó por janela
+    max_len: int = 192                  # tokens por janela, com [CLS] e [SEP]
+    max_span_len: int = 16              # tamanho máximo de um span, em subtokens
     mask_digits: bool = False           # troca dígitos por 0 antes do encoder
     seed: int = 0
 
@@ -72,7 +72,7 @@ class Seq2MatrixConfig:
     early_stopping_patience: int = 10
     warmup_ratio: float = 0.1
     grad_clip: float = 1.0
-    fp16: bool = True
+    fp16: bool = False
 
     # ---------------------------------------------------------------- decodificação
     schema_mask: bool = True
